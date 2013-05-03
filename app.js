@@ -41,9 +41,9 @@ app.get('/', function(req, res){
 });
 
 app.get('/createtables', function(req, res){
-  client.query('CREATE TABLE customgeos (geom geometry, updated timestamp)', function(err, result){
+  client.query('CREATE TABLE customgeos (id SERIAL, geom geometry, updated timestamp)', function(err, result){
     res.write(JSON.stringify(result || err.toString()));
-    client.query('CREATE TABLE timepoints (point geometry, starttime timestamp, endtime timestamp)', function(err, result){
+    client.query('CREATE TABLE timepoints (id SERIAL, point geometry, starttime timestamp, endtime timestamp)', function(err, result){
       res.write(JSON.stringify(result || err.toString()));
       res.end();
     });
@@ -65,8 +65,8 @@ app.post('/customgeo', function(req, res){
   var now = (new Date()).toISOString().replace("T", " ");
   now = now.substring(0, now.indexOf("Z"));
 
-  client.query("INSERT INTO customgeos VALUES ('" + wkt + "', '" + now + "') RETURNING oid", function(err, result){
-    res.send( result || err.toString() );
+  client.query("INSERT INTO customgeos VALUES ('" + wkt + "', '" + now + "') RETURNING id", function(err, result){
+    res.send( JSON.stringify(result) || err.toString() );
     //res.json({ id: result.oid });
   });
 });
