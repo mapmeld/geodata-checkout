@@ -62,7 +62,7 @@ app.post('/customgeo', function(req, res){
   var now = (new Date()).toISOString().replace("T", " ");
   now = now.substring(0, now.indexOf("Z"));
 
-  client.query("INSERT INTO timepoints VALUES ('" + wkt + "', '" + now + "')", function(err, result){
+  client.query("INSERT INTO timepoints VALUES ('" + wkt + "'), ('" + now + "')", function(err, result){
     res.send(err || result);
   });
 });
