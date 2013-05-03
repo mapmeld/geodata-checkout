@@ -154,7 +154,6 @@ var processTimepoints = function(timepoints, req, res){
 };
   
 app.get('/timeline-at*', function(req, res){
-  if(req.query.customgeo && req.query.customgeo != ""){
     // do a query to return GeoJSON inside a custom polygon
     client.query("SELECT ST_AsGeoJSON(geom) FROM customgeos WHERE id = " + 1 * req.query.customgeo + " LIMIT 1", function(err, geo){
       if(err){
@@ -175,17 +174,6 @@ app.get('/timeline-at*', function(req, res){
         processTimepoints(timepoints.rows, req, res);
       });
     });
-  }
-  else{
-    // do a query to return GeoJSON timeline near a point
-    timepoint.TimePoint.find({ ll: { "$nearSphere": [  req.query["lng"] || -83.645782, req.query['lat'] || 32.837026 ], "$maxDistance": 0.01 } }).limit(10000).exec(function(err, timepoints){
-      // convert all timepoints into GeoJSON format
-      if(err){
-        return res.send(err);
-      }
-      processTimepoints(timepoints, req, res);
-    });
-  }
 });
 
 // redirect all non-existent URLs to doesnotexist
