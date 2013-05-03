@@ -107,12 +107,12 @@ app.post('/timeline', function(req, res){
   }
   end = end.toISOString().replace("T", " ").substring(0, end.indexOf("Z"));
   
-  return res.json({
+  return res.send(JSON.stringify({
     start: start,
     end: end,
     lng: req.body.lng.toFixed(6),
     lat: req.body.lat.toFixed(6)
-  });
+  }));
   
   client.query("INSERT INTO timepoints VALUES ('POINT(" + (req.body.lng * 1.0).toFixed(6) + " " + (req.body.lat * 1.0).toFixed(6) + ")', '" + start + "', '" + end + "')", function(err, result){
     res.send(JSON.stringify(err || result));
