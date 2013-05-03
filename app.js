@@ -66,7 +66,7 @@ app.post('/customgeo', function(req, res){
   now = now.substring(0, now.indexOf("Z"));
 
   client.query("INSERT INTO customgeos VALUES ('" + wkt + "', '" + now + "') RETURNING oid", function(err, result){
-    res.json( result );
+    res.send( result || err.toString() );
     //res.json({ id: result.oid });
   });
 });
