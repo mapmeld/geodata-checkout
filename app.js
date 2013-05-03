@@ -91,7 +91,8 @@ app.post('/timeline', function(req, res){
   else{
     start = new Date(start * 1.0);
   }
-  start = (start.toISOString()).replace("T", " ").substring(0, start.indexOf("Z"));
+  start = start.toISOString();
+  start = start.replace("T", " ").substring(0, start.indexOf("Z"));
   
   if(!end){
     end = new Date();
@@ -105,7 +106,8 @@ app.post('/timeline', function(req, res){
   else{
     end = new Date(end * 1.0);
   }
-  end = (end.toISOString()).replace("T", " ").substring(0, end.indexOf("Z"));
+  end = end.toISOString();
+  end = end.replace("T", " ").substring(0, end.indexOf("Z"));
   
   client.query("INSERT INTO timepoints VALUES ('POINT(" + (req.body.lng * 1.0).toFixed(6) + " " + (req.body.lat * 1.0).toFixed(6) + ")', '" + start + "', '" + end + "')", function(err, result){
     res.send(JSON.stringify(err || result));
