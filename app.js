@@ -155,18 +155,15 @@ var processTimepoints = function(timepoints, req, res){
   
 app.get('/timeline-at*', function(req, res){
     // do a query to return GeoJSON inside a custom polygon
-    client.query("SELECT ST_AsGeoJSON(geom) FROM customgeos WHERE id = " + 1 * req.query.customgeo + " LIMIT 1", function(err, geo){
+    client.query("SELECT ST_AsText(geom) FROM customgeos WHERE id = " + 1 * req.query.customgeo + " LIMIT 1", function(err, geo){
       if(err){
         return res.send(err);
       }
       
       //return res.json(geo);
       
-      var poly = geo.rows[0].st_asgeojson.coordinates[0];
-      for(var p=0;p<poly.length;p++){
-        poly[p] = poly[p][0] + " " + poly[p][1];
-      }
-      client.query("SELECT * FROM timepoints WHERE ST_Contains(POLYGON((" + poly.join(", ") + ")), point)", function(err, timepoints){
+      var poly = geo.rows[0].ST_AsText;
+      client.query("SELECT * FROM timepoints WHERE ST_Contains('" + poly + "'), point)", function(err, timepoints){
         if(err){
           return res.send(err);
         }
