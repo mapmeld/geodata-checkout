@@ -83,7 +83,7 @@ app.post('/timeline', function(req, res){
     start = new Date();
   }
   else if(isNaN( start * 1.0 )){
-    start = new Date(start * 1.0);  
+    start = new Date(start);  
   }
   else if(start * 1.0 < 10000){
     start = new Date("January 10, " + start);
@@ -97,7 +97,7 @@ app.post('/timeline', function(req, res){
     end = new Date();
   }
   else if(isNaN( end * 1.0 )){
-    end = new Date(end * 1.0);  
+    end = new Date(end);  
   }
   else if(end * 1.0 < 10000){
     end = new Date("January 10, " + end);
@@ -106,13 +106,6 @@ app.post('/timeline', function(req, res){
     end = new Date(end * 1.0);
   }
   end = end.toISOString().replace("T", " ").substring(0, end.indexOf("Z"));
-  
-  return res.send(JSON.stringify({
-    start: start,
-    end: end,
-    lng: req.body.lng.toFixed(6),
-    lat: req.body.lat.toFixed(6)
-  }));
   
   client.query("INSERT INTO timepoints VALUES ('POINT(" + (req.body.lng * 1.0).toFixed(6) + " " + (req.body.lat * 1.0).toFixed(6) + ")', '" + start + "', '" + end + "')", function(err, result){
     res.send(JSON.stringify(err || result));
