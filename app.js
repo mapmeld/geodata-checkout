@@ -58,7 +58,7 @@ app.post('/customgeo', function(req, res){
     latlngs[i][1] = (latlngs[i][1] * 1.0).toFixed(6);
     latlngs[i] = latlngs[i].join(" ");
   }
-  var wkt = "POLYGON((" + latlngs.join(",") + "))";
+  var wkt = "POLYGON((" + latlngs.join(", ") + "))";
   var now = (new Date()).toISOString().replace("T", " ");
   now = now.substring(0, now.indexOf("Z"));
 
