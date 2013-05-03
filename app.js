@@ -41,13 +41,13 @@ app.get('/', function(req, res){
 });
 
 app.get('/createtables', function(req, res){
-  client.query('CREATE TABLE customgeos (geom geometry, updated timestamp)', function(err, result){
-    res.write(JSON.stringify(result || err.toString()));
+  //client.query('CREATE TABLE customgeos (geom geometry, updated timestamp)', function(err, result){
+  //  res.write(JSON.stringify(result || err.toString()));
     client.query('CREATE TABLE timepoints (point geometry, start timestamp, end timestamp)', function(err, result){
       res.write(JSON.stringify(result || err.toString()));
       res.end();
     });
-  });
+  //});
 });
 
 app.post('/customgeo', function(req, res){
