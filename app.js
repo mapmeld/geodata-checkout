@@ -121,8 +121,9 @@ var processTimepoints = function(timepoints, req, res){
     var kmlintro = '<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://earth.google.com/kml/2.2">\n	<Document>\n		<name>Time-Enabled Code Enforcement KML</name>\n		<description>Rounded locations of code enforcement cases 1997-2012</description>\n		<Style id="dot-icon">\n			<IconStyle>\n					<scale>0.6</scale>\n        <Icon>\n          <href>http://homestatus.herokuapp.com/images/macon-marker-02.png</href>\n        </Icon>\n      </IconStyle>\n    </Style>\n    <Style>\n      <ListStyle>\n        <listItemType>checkHideChildren</listItemType>\n      </ListStyle>\n    </Style>\n';
     var kmlpts = '';
     for(var t=0; t<timepoints.length; t++){
-      var latitude = timepoints[t].ll[1];
-      var longitude = timepoints[t].ll[0];
+      var pt = JSON.parse(timepoints[t].st_asgeojson);
+      var latitude = pt.coordinates[1];
+      var longitude = pt.coordinates[0];
       var startstamp = (new Date(timepoints[t].start)).toISOString();
       var endstamp = (new Date(timepoints[t].end)).toISOString();
       kmlpts += '	<Placemark>\n		<TimeSpan>\n';
@@ -139,9 +140,10 @@ var processTimepoints = function(timepoints, req, res){
   else{
     // GeoJSON output
     for(var t=0; t<timepoints.length; t++){
+      var pt = JSON.parse(timepoints[t].st_asgeojson);
       timepoints[t] = {
         "geometry": {
-          "coordinates": [ timepoints[t].ll[0], timepoints[t].ll[1] ]
+          "coordinates": pt.coordinates;
         },
         "properties": {
           "startyr": timepoints[t].start,
@@ -160,7 +162,6 @@ app.get('/timeline-at*', function(req, res){
       if(err){
         return res.send(err);
       }
-      return res.json(timepoints.rows);
       processTimepoints(timepoints.rows, req, res);
     });
 });
