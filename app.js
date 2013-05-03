@@ -107,7 +107,14 @@ app.post('/timeline', function(req, res){
   }
   end = end.toISOString().replace("T", " ").substring(0, end.indexOf("Z"));
   
-  client.query("INSERT INTO timepoints VALUES ('POINT(" + (req.body.lng * 1.0) + " " + (req.body.lat * 1.0) + ")', '" + start + "', '" + end + "')", function(err, result){
+  return res.json({
+    start: start,
+    end: end,
+    lng: req.body.lng.toFixed(6),
+    lat: req.body.lat.toFixed(6)
+  });
+  
+  client.query("INSERT INTO timepoints VALUES ('POINT(" + (req.body.lng * 1.0).toFixed(6) + " " + (req.body.lat * 1.0).toFixed(6) + ")', '" + start + "', '" + end + "')", function(err, result){
     res.send(JSON.stringify(err || result));
   });
 });
