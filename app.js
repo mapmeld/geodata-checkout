@@ -58,11 +58,14 @@ app.post('/customgeo', function(req, res){
     latlngs[i][1] = (latlngs[i][1] * 1.0).toFixed(6);
     latlngs[i] = latlngs[i].join(" ");
   }
+  if(latlngs[latlngs.length-1] != latlngs[0]){
+    latlngs.push(latlngs[0]);
+  }
   var wkt = "POLYGON((" + latlngs.join(", ") + "))";
   var now = (new Date()).toISOString().replace("T", " ");
   now = now.substring(0, now.indexOf("Z"));
 
-  client.query("INSERT INTO timepoints VALUES ('" + wkt + "'), ('" + now + "')", function(err, result){
+  client.query("INSERT INTO timepoints VALUES ('" + wkt + "', '" + now + "')", function(err, result){
     res.send(err || result);
   });
 });
