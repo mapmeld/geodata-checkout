@@ -155,21 +155,14 @@ var processTimepoints = function(timepoints, req, res){
   
 app.get('/timeline-at*', function(req, res){
     // do a query to return GeoJSON inside a custom polygon
-    //client.query("SELECT ST_AsText(geom) FROM customgeos WHERE id = " + 1 * req.query.customgeo + " LIMIT 1", function(err, geo){
-      //if(err){
-      //  return res.send(err);
-      //}
       
-      //return res.json(geo);
-      
-      client.query("SELECT * FROM customgeos, timepoints WHERE customgeos.id = " + (1 * req.query.customgeo) + " AND ST_Contains(customgeos.geom, timepoints.point)", function(err, timepoints){
-        if(err){
-          return res.send(err);
-        }
-        return res.json(timepoints);
-        processTimepoints(timepoints.rows, req, res);
-      });
-    //});
+    client.query("SELECT starttime, endtime, ST_AsGeoJson(point) FROM customgeos, timepoints WHERE customgeos.id = " + (1 * req.query.customgeo) + " AND ST_Contains(customgeos.geom, timepoints.point)", function(err, timepoints){
+      if(err){
+        return res.send(err);
+      }
+      return res.json(timepoints.rows);
+      processTimepoints(timepoints.rows, req, res);
+    });
 });
 
 // redirect all non-existent URLs to doesnotexist
