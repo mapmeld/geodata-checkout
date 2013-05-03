@@ -97,7 +97,7 @@ app.post('/timeline', function(req, res){
     end = new Date(end * 1.0);  
   }
   else if(end * 1.0 < 10000){
-    end = new Date("January 10, " end);
+    end = new Date("January 10, " + end);
   }
   else{
     end = new Date(end * 1.0);
