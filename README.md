@@ -1,6 +1,8 @@
 # GeoData-Checkout
 
-GeoData-Checkout is an open data platform for geospatial and time-enabled data. Data is stored inside MongoDB and made available to users in an interactive timeline/map, time-enabled KML for Google Earth, and GeoJSON.
+GeoData-Checkout is an open data platform for geospatial and time-enabled data.
+
+In this branch, data is stored inside PostgreSQL / PostGIS and made available to users in an interactive timeline/map, time-enabled KML for Google Earth, and GeoJSON.
 
 Step 1: Draw a polygon around your neighborhood ( using Leaflet.js polygon editing tools )
 
@@ -16,17 +18,13 @@ Step 3: Download options include KML or GeoJSON. When you open the KML file in G
 
 # Technology
 
-## About MongoDB
+## About PostGIS
 
-MongoDB is a NoSQL database which supports <a href="http://www.mongodb.org/display/DOCS/Geospatial+Indexing">geospatial queries</a>. The drawn polygon is saved as a CustomGeo, and its points are used to make this query:
+PostGIS is a geospatial plugin for the PostgreSQL database. You can add it to Heroku on production plans (currently $50/month or more)
 
-    timepoint.TimePoint.find( {
-      ll: {
-        "$within": {
-          "$polygon": poly
-        }
-      }
-    })
+To return points inside your polygon, this query is run on the database:
+
+    SELECT starttime, endtime, ST_AsGeoJson(point) FROM customgeos, timepoints WHERE customgeos.id = #{id} AND ST_Contains(customgeos.geom, timepoints.point);
 
 ## Other technologies used
 
@@ -34,7 +32,7 @@ Leaflet.js from Cloudmade, MapBox.js from MapBox, Leaflet.js Pan Control, Node.j
 
 ## Historic Buildings: Macon & Chicago
 
-The timeline code was repurposed to show a <a href="http://historic-macon.herokuapp.com/timeline?customgeo=5080a0bf5766800200000346">building timeline</a> for Historic Macon.
+Older versions of this project show a <a href="http://historic-macon.herokuapp.com/timeline?customgeo=5080a0bf5766800200000346">building timeline</a> for Historic Macon.
 
 <img src="http://i.imgur.com/hayao.png"/>
 
@@ -78,11 +76,27 @@ For more details, please see BeyondFog's [blog post](http://blog.beyondfog.com/?
     heroku create APP_NAME
     git push heroku master
 
-After you have created a new app on Heroku and pushed the code via git, you will need to use the Heroku Toolbelt from your command line to add the free MongoLab starter addon:
+After you have created a new app on Heroku and pushed the code via git, you will need to add the database:
 
-    heroku addons:add mongolab:starter
-
-Go to Heroku, click on Apps and then on this app's Addons panel. On the MongoLab admin panel, add a geospatial index to the "ll" field
+    #### THIS WILL COST YOU MONEY
+    
+    heroku addons:add heroku-postgresql:crane
+    
+    ( wait 3-5 minutes for database to be created )
+    
+    heroku pg:psql OPTIONS
+    
+    (you will see a name of your database, such as HEROKU_POSTGRESQL_CYAN_URL)
+    
+    heroku pg:psql HEROKU_POSTGRESQL_CYAN_URL
+    
+    (you will enter a new command line)
+    
+    create extension postgis;
+    
+    :q
+    
+    (go to /createtables on your server to finish setting up the database)
 
 
 ### Uploading data
@@ -93,5 +107,5 @@ POST body should include these variables:
 
 * lat = latitude
 * lng = longitude
-* start = StartMonth
-* end = EndMonth
+* start = time
+* end = time
