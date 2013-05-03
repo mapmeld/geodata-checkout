@@ -10,7 +10,7 @@ var express = require('express')
 
 var app = express.createServer();
 
-var client = new pg.Client(process.env.DATABASE_URL || 'postgres://localhost:5432/postgis');
+var client = new pg.Client(process.env.HEROKU_POSTGRESQL_CYAN_URL || 'postgres://localhost:5432/postgis');
 client.connect();
 
 app.configure(function(){
