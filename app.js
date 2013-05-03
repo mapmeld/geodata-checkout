@@ -162,7 +162,7 @@ app.get('/timeline-at*', function(req, res){
       
       //return res.json(geo);
       
-      client.query("SELECT ST_AsGeoJSON, starttime, endtime FROM customgeos, timepoints WHERE customgeos.id = " + (1 * req.query.customgeo) + " AND ST_Contains(customgeos.geom, timepoints.point)", function(err, timepoints){
+      client.query("SELECT * FROM customgeos, timepoints WHERE customgeos.id = " + (1 * req.query.customgeo) + " AND ST_Contains(customgeos.geom, timepoints.point)", function(err, timepoints){
         if(err){
           return res.send(err);
         }
