@@ -66,8 +66,8 @@ app.post('/customgeo', function(req, res){
   now = now.substring(0, now.indexOf("Z"));
 
   client.query("INSERT INTO customgeos (geom, updated) VALUES ('" + wkt + "', '" + now + "') RETURNING id", function(err, result){
-    res.send( JSON.stringify(result) || err.toString() );
-    //res.json({ id: result.oid });
+    //res.send( JSON.stringify(result) || err.toString() );
+    res.json({ id: result.rows[0].id });
   });
 });
 
@@ -156,7 +156,7 @@ var processTimepoints = function(timepoints, req, res){
 app.get('/timeline-at*', function(req, res){
   if(req.query.customgeo && req.query.customgeo != ""){
     // do a query to return GeoJSON inside a custom polygon
-    client.query("SELECT ST_AsGeoJSON(geom) FROM customgeos WHERE oid = " + 1 * req.query.customgeo, function(err, geo){
+    client.query("SELECT ST_AsGeoJSON(geom) FROM customgeos WHERE id = " + 1 * req.query.customgeo, function(err, geo){
       if(err){
         return res.send(err);
       }
