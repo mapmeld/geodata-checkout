@@ -143,7 +143,7 @@ var processTimepoints = function(timepoints, req, res){
       var pt = JSON.parse(timepoints[t].st_asgeojson);
       timepoints[t] = {
         "geometry": {
-          "coordinates": pt.coordinates;
+          "coordinates": pt.coordinates
         },
         "properties": {
           "startyr": timepoints[t].start,
