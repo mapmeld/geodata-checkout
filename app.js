@@ -41,9 +41,9 @@ app.get('/', function(req, res){
 });
 
 app.get('/createtables', function(req, res){
-  client.query('CREATE TABLE customgeos (geom geometry, updated date)', function(err, result){
+  client.query('CREATE TABLE customgeos (geom geometry, updated timestamp)', function(err, result){
     res.write(result || err);
-    client.query('CREATE TABLE timepoints (point geometry, start date, end date)', function(err, result){
+    client.query('CREATE TABLE timepoints (point geometry, start timestamp, end timestamp)', function(err, result){
       res.write(result || err);
       res.end();
     });
@@ -51,27 +51,61 @@ app.get('/createtables', function(req, res){
 });
 
 app.post('/customgeo', function(req, res){
-  var shape = new customgeo.CustomGeo({
-    latlngs: req.body.pts.split("|")
-  });
-  shape.save(function (err){
-    res.send({ id: shape._id });
+  var latlngs = req.body.pts.split("|");
+  for(var i=0;i<latlngs.length;i++){
+    latlngs[i] = latlngs[i].split(",").slice(0,2);
+    latlngs[i][0] = (latlngs[i][0] * 1.0).toFixed(6);
+    latlngs[i][1] = (latlngs[i][1] * 1.0).toFixed(6);
+    latlngs[i].join(" ");
+  }
+  var wkt = "POLYGON((" + latlngs.join(",") + "))";
+  var now = (new Date()).toISOString().replace("T", " ");
+  now = now.substring(0, now.indexOf("Z"));
+
+  client.query("INSERT INTO timepoints VALUES ('" + wkt + "', '" + now + "')", function(err, result){
+    res.send(err || result);
   });
 });
+
 app.get('/timeline', function(req, res){
   // show timeline
   res.render('checkouttime', { customgeo: req.query['customgeo'] });
 });
+
 app.post('/timeline', function(req, res){
   // load this point into PostGIS
-  pt = new timepoint.TimePoint({
-    start: req.body['start'] * 1.0,
-    end: req.body['end'] * 1.0,
-    // use [ lng , lat ] format to be consistent with GeoJSON
-    ll: [ req.body['lng'] * 1.0, req.body['lat'] * 1.0 ]
-  });
-  pt.save(function(err){
-    res.send(err || 'success');
+  var start = req.body.start;
+  var end = req.body.end;
+  if(!start){
+    start = new Date();
+  }
+  else if(isNaN( start * 1.0 )){
+    start = new Date(start * 1.0);  
+  }
+  else if(start * 1.0 < 10000){
+    start = new Date("January 10, " + start);
+  }
+  else{
+    start = new Date(start * 1.0);
+  }
+  start = start.toISOString().replace("T", " ").substring(0, start.indexOf("Z"));
+  
+  if(!end){
+    end = new Date();
+  }
+  else if(isNaN( end * 1.0 )){
+    end = new Date(end * 1.0);  
+  }
+  else if(end * 1.0 < 10000){
+    end = new Date("January 10, " end);
+  }
+  else{
+    end = new Date(end * 1.0);
+  }
+  end = end.toISOString().replace("T", " ").substring(0, end.indexOf("Z"));
+  
+  client.query("INSERT INTO timepoints VALUES ('POINT(" + (req.body.lng * 1.0) + " " + (req.body.lat * 1.0) + ")', '" + start + "', '" + end + "')", function(err, result){
+    res.send(err || result);
   });
 });
   
