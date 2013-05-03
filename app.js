@@ -66,7 +66,7 @@ app.post('/customgeo', function(req, res){
   now = now.substring(0, now.indexOf("Z"));
 
   client.query("INSERT INTO customgeos VALUES ('" + wkt + "', '" + now + "')", function(err, result){
-    res.send({ "_id": result.oid });
+    res.json({ id: result.oid });
   });
 });
 
@@ -108,7 +108,7 @@ app.post('/timeline', function(req, res){
   end = end.toISOString().replace("T", " ").substring(0, end.indexOf("Z"));
   
   client.query("INSERT INTO timepoints VALUES ('POINT(" + (req.body.lng * 1.0) + " " + (req.body.lat * 1.0) + ")', '" + start + "', '" + end + "')", function(err, result){
-    res.send(err || result);
+    res.send(JSON.stringify(err || result));
   });
 });
   
