@@ -56,7 +56,7 @@ app.post('/customgeo', function(req, res){
     latlngs[i] = latlngs[i].split(",").slice(0,2);
     latlngs[i][0] = (latlngs[i][0] * 1.0).toFixed(6);
     latlngs[i][1] = (latlngs[i][1] * 1.0).toFixed(6);
-    latlngs[i] = latlngs[i].join(" ");
+    latlngs[i] = latlngs[i].reverse().join(" ");
   }
   if(latlngs[latlngs.length-1] != latlngs[0]){
     latlngs.push(latlngs[0]);
