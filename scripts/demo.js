@@ -60,5 +60,9 @@ function loadData(city){
 }
 
 function geojsonp(gj){
-  geojson = L.geoJson(gj).addTo(map);
+  geojson = L.geoJson(gj, {
+    style: function(feature){
+      return { clickable: false, weight: 2, fillOpacity: 0.1 };
+    }
+  }).addTo(map);
 }
