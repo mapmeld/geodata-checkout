@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GeoData Checkout</title>
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet" media="all" type="text/css"/>
+    <link href="stylesheets/leaflet.css" rel="stylesheet" media="all" type="text/css"/>
+    <!-- [if lte IE 8]
+      <link rel="stylesheet" href="stylesheets/leaflet.ie.css" type="text/css"/>
+    -->
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="span8">
+          <div class="hero-unit">
+            <h3>GeoData Checkout</h3>
+            <ul>
+              <li>Publish your data in a simple map interface</li>
+              <li>Download in KML format for Google Earth and ArcGIS</li>
+              <li>Built with open source technology that you can host yourself, or even for free on Heroku</li>
+              <li>Includes a GeoJSON JSONP API for programmers to use your data anywhere on the web</li>
+              <li>PostgreSQL/PostGIS or MongoDB storage, with a Node.js server</li>
+            </ul>
+          </div>
+        </div>
+        <div class="span4">
+          <div class="hero-unit">
+            <h4>Code and Installation</h4>
+            <ul class="nav nav-list">
+              <li>
+                <a href="https://github.com/codeforamerica/geodata-checkout">with MongoDB</a>
+              </li>
+              <li>
+                <a href="https://github.com/mapmeld/geodata-checkout">with PostGIS</a>
+              </li>
+            </ul>
+            <br/>
+            <h4>Need a hand?</h4>
+            <ul class="nav nav-list">
+              <li>
+                <a href="mailto:ndoiron@mapmeld.com">Contact Nick</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span3">
+          <h4>Try it out:</h4>
+          <ul class="nav nav-list">
+            <li class="active">
+              <a href="#" onclick='loadData("seattle");'>Seattle Buildings Map</a>
+            </li>
+            <li>
+              <a href="#" onclick='loadData("chicago");'>Chicago Crime API</a>
+            </li>
+            <li>
+              <a href="#" onclick='loadData("macon");'>Macon Housing Timeline</a>
+            </li>
+          </ul>
+        </div>
+        <div id="map" class="span9">
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="scripts/leaflet.js"></script>
+    <script type="text/javascript" src="scripts/demo.js"></script>
+    <br/>
+    <br/>
+    <br/>
+  </body>
+</html>
