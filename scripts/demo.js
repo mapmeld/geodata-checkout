@@ -1,4 +1,4 @@
-document.getElementById('map').style.height = '300px';
+document.getElementById('map').style.height = '450px';
 
 map = new L.Map('map');
 
