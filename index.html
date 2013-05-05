@@ -4,8 +4,11 @@
     <title>GeoData Checkout</title>
     <link href="stylesheets/bootstrap.min.css" rel="stylesheet" media="all" type="text/css"/>
     <link href="stylesheets/leaflet.css" rel="stylesheet" media="all" type="text/css"/>
+    <link href="stylesheets/MarkerCluster.css" rel="stylesheet" media="all" type="text/css"/>
+    <link href="stylesheets/MarkerCluster.Default.css" rel="stylesheet" media="all" type="text/css"/>
     <!-- [if lte IE 8]
-      <link rel="stylesheet" href="stylesheets/leaflet.ie.css" type="text/css"/>
+      <link rel="stylesheet" href="stylesheets/leaflet.ie.css" type="text/css" media="all"/>
+      <link href="stylesheets/MarkerCluster.Default.ie.css" rel="stylesheet" media="all" type="text/css"/>
     -->
   </head>
   <body>
@@ -48,15 +51,17 @@
         <div class="span3">
           <h3>Try it out</h3>
           <ul class="nav nav-list">
-            <li class="active">
+            <li id="seattle" class="active">
               <a href="#" onclick='loadData("seattle");'>Seattle Buildings Map</a>
             </li>
-            <li>
+            <li id="chicago">
               <a href="#" onclick='loadData("chicago");'>Chicago Crime API</a>
             </li>
+            <!--
             <li>
               <a href="#" onclick='loadData("macon");'>Macon Housing Timeline</a>
             </li>
+            -->
           </ul>
         </div>
         <div id="map" class="span9">
@@ -64,6 +69,7 @@
       </div>
     </div>
     <script type="text/javascript" src="scripts/leaflet.js"></script>
+    <script type="text/javascript" src="scripts/leaflet.markercluster.js"></script>
     <script type="text/javascript" src="scripts/demo.js"></script>
     <br/>
     <br/>
