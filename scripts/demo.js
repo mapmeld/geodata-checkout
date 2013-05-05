@@ -40,7 +40,7 @@ function loadData(city){
         var s = document.createElement("script");
         s.type = "text/javascript";
         s.src = "http://majurojs.org/timeline-at/[[" + pts.join("],[") + "]]/jsonp/geojsonp";
-        map.attributionControl.setPrefix('<a href="' + s.src.replace('/jsonp/geojsonp','') + '" target="_blank">GeoJSON Download</a>');
+        map.attributionControl.setPrefix('<a href="' + s.src.replace('/jsonp/geojsonp','.kml') + '" target="_blank">Google Earth Download</a>');
         document.body.appendChild(s);
       };
       break;
@@ -55,7 +55,7 @@ function loadData(city){
         var s = document.createElement("script");
         s.type = "text/javascript";
         s.src = "http://philly-crime-checkout.herokuapp.com/geo?area=[[" + pts.join("],[") + "]]&jsonp=geojsonp";
-        map.attributionControl.setPrefix('<a href="' + s.src.replace('&jsonp=geojsonp','') + '" target="_blank">GeoJSON Download</a>');
+        map.attributionControl.setPrefix('<a href="' + s.src.replace('&jsonp=geojsonp','.kml') + '" target="_blank">Google Earth Download</a>');
         document.body.appendChild(s);
       };
       break;
