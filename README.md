@@ -1,5 +1,7 @@
 # GeoData-Checkout
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mapmeld/geodata-checkout.svg)](https://greenkeeper.io/)
+
 GeoData-Checkout is an open data platform for geospatial and time-enabled data.
 
 In this branch, data is stored inside PostgreSQL / PostGIS and made available to users in an interactive timeline/map, time-enabled KML for Google Earth, and GeoJSON.
